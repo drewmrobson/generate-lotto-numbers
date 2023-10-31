@@ -60,15 +60,12 @@ async function search(page, pick) {
         .locator('[data-test-id="results-search-year"]')
         .selectOption(year.toString());
       await page.locator('[data-test-id="button-find"]').click();
-      // await page.waitForSelector('.au-target.number span', { timeout: 3000 });
-      
+ 
       await page.waitForTimeout(3000); // waits for 1 seconds
 
       const texts = await page
         .locator(".au-target.number span")
         .allInnerTexts();
-
-      // console.log(`Read ${texts}`);
 
       if(year === 2018
         && month === "April") {
@@ -113,25 +110,10 @@ async function search(page, pick) {
         loop = 3;
       }
 
-      // console.log(`valuesPerSet: ${valuesPerSet}`);
-      // console.log(`loop: ${loop}`);
-
-      // 
-      // if(numberWinningNumbers % 6 === 0) {
-      //   valuesPerSet = 6;
-      // } else if(numberWinningNumbers % 7 === 0) {
-      //   valuesPerSet = 7;
-      // } else {
-      //   console.log(`${valuesPerSet}`);
-      // }
-
-      // let loops = numberWinningNumbers / valuesPerSet;
-
       // For each set of winning numbers
       for (let i = 0; i < loop; i++) {
         // Remove the first valuesPerSet as our winning numbers
         const take = texts.splice(0, valuesPerSet);
-        // console.log(`Take ${take}`);
 
         // Convert to int and sort
         const compareWith = take.map(toNumber).sort((a, b) => a - b);
