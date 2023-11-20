@@ -19,6 +19,7 @@ This project uses a Playwright test defined in TypeScript to scrape the historic
 # Usage
 
 ```
+npx playwright install
 npm install -D @playwright/test
 npx playwright test --headed
 ```
