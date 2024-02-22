@@ -1,6 +1,10 @@
 # generate-lotto-numbers
 
-Generates a random number and validates it has not occurred in past lotto draws.
+Generates a random number and validates it has not occurred in past Lotto Australia draws.
+
+## Further Reading
+
+- [The Lott](https://www.thelott.com/)
 
 # Warning
 
@@ -14,7 +18,7 @@ While exploring the probability space, I wondered how to select a number which h
 
 # Implementation
 
-This project uses a Playwright test defined in TypeScript to scrape the historical draw numbers from The Lott's Powerball page. A randomly generated number is compared against this historical data. If there is no match, it returns success as a valid solution.
+This project uses a Playwright test defined in TypeScript to scrape the historical draw numbers from The Lott's Powerball page. A randomly generated number is compared against this historical data. If there is no match, it returns success as a valid solution. This could be extended to scrape the other game options available beyond Powerball.
 
 # Usage
 
