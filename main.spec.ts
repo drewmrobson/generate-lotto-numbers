@@ -1,7 +1,15 @@
 import { test, expect } from "@playwright/test";
 
+// Count of numbers to generate
+const LENGTH = 7;
+
+// Target URL to start at i.e.
+// https://www.thelott.com/oz-lotto/results
+// https://www.thelott.com/powerball/results
+const TARGET = 'https://www.thelott.com/oz-lotto/results';
+
 test("test", async ({ page }) => {
-  await page.goto("https://www.thelott.com/powerball/results");
+  await page.goto(TARGET);
 
   // Generate random pick  
   const pick = getPick();
@@ -10,6 +18,7 @@ test("test", async ({ page }) => {
   // Search until a match is found
   if (await search(page, pick)) {
     console.log(`Pick ${pick} has already occurred`);
+    return;
   }
 
   // If no match is found, we have a winner
@@ -17,6 +26,8 @@ test("test", async ({ page }) => {
 });
 
 async function search(page, pick) {
+
+  // Array of months to query
   const months = [
     "January",
     "February",
@@ -31,7 +42,9 @@ async function search(page, pick) {
     "November",
     "December",
   ];
-  const years = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+
+  // Array of years to query
+  const years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
   // Iterate over the months for each year
   for (let i = 0; i < years.length; i++) {
@@ -51,17 +64,21 @@ async function search(page, pick) {
         && year >= y ) {
           return false;
       }
-
-      // Get winning numbers from site
+   
+      // Select target date
       await page
         .locator('[data-test-id="results-search-month"]')
         .selectOption(month.toString());
+
       await page
         .locator('[data-test-id="results-search-year"]')
-        .selectOption(year.toString());
-      await page.locator('[data-test-id="button-find"]').click();
+        .selectOption({ label: year.toString() });
+
+      await page
+        .locator('[data-test-id="button-find"]')
+        .click();
  
-      await page.waitForTimeout(3000); // waits for 1 seconds
+      await page.waitForTimeout(1000); // waits for 1 seconds
 
       const texts = await page
         .locator(".au-target.number span")
@@ -73,14 +90,11 @@ async function search(page, pick) {
           break;
         }
 
-      // Some months have 6 numbers
-      // and 4 events (24)
-      // Some months have 6 numbers
-      // and 5 event (30)
-      // Some months have 7 numbers
-      // and 4 events (28)
-      // Some months have 7 numbers
-      // and 5 events (35)
+      // Powerball only -
+      // Some months have 6 numbers and 4 events (24)
+      // Some months have 6 numbers and 5 event (30)
+      // Some months have 7 numbers and 4 events (28)
+      // Some months have 7 numbers and 5 events (35)
 
       const numberWinningNumbers = texts.length;
       if(numberWinningNumbers != 30
@@ -143,7 +157,7 @@ function toNumber(value) {
 function getPick() {
 
   let pick: number[] = [];
-  while(pick.length < 6) {
+  while(pick.length < LENGTH) {
     const r = getRandomInt(35);
 
     if (r > 0
