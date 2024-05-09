@@ -6,7 +6,7 @@ const LENGTH = 7;
 // Target URL to start at i.e.
 // https://www.thelott.com/oz-lotto/results
 // https://www.thelott.com/powerball/results
-const TARGET = 'https://www.thelott.com/oz-lotto/results';
+const TARGET = 'https://www.thelott.com/powerball/results';
 
 test("test", async ({ page }) => {
   await page.goto(TARGET);
